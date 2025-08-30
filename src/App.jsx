@@ -1,63 +1,58 @@
-import { useState } from 'react'
-import styles from './app.module.css'
+import { useEffect, useState } from 'react';
+import styles from './app.module.css';
 
 export const App = () => {
-	const [value, setValue] = useState('');
-	const [list, setList] = useState([]);
-	const [error, setError] = useState('');
+	const [todos, setTodos] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 
-	const isValueValid = value.length >= 3;
+	useEffect(() => {
+		setIsLoading(true);
 
-	const onInputButtonClick = () => {
-		const promptValue = prompt('Ввести новое');
-		setValue(promptValue);
+		fetch('https://jsonplaceholder.typicode.com/todos')
+			.then((loadedData) => loadedData.json())
+			.then((loadedTodos) => {
+				setTodos(loadedTodos.slice(0, 10));
+			})
+			.finally(() => setIsLoading(false));
+	}, []);
 
-		if (promptValue.length < 3) {
-			setError('Введите минимум 3 символа')
-
-		} else {
-			setValue(promptValue);
-			setError('')
-		}
-	}
-
-	const onAddButtonClick = () => {
-		if (isValueValid) {
-			const newId = Date.now()
-			const updatedList = [...list, { id: newId, value: value }]
-			setList(updatedList)
-		};
-
-		setValue('');
-		setError('')
-	}
-
-
+	const handleToggleComplete = (id) => {
+		setTodos(todos.map(todo =>
+			todo.id === id
+				? { ...todo, completed: !todo.completed }
+				: todo
+		));
+	};
 
 	return (
-		<div className="app">
-			<h1 className={styles["page-heading"]}>Ввод значения</h1>
-			<p className={styles["no-margin-text"]}>
-				Текущее значение <code>value</code>: "<output className={styles["current-value"]}>{value}</output>"
-			</p>
-			{error && <div className={styles.error}>Введенное значение должно содержать минимум 3 символа</div>}
-			<div className={styles["buttons-container"]}>
-				<button className={styles.button} onClick={onInputButtonClick}>Ввести новое</button>
-				<button className={styles.button} onClick={onAddButtonClick} disabled={!isValueValid}>Добавить в список</button>
+		<div className={styles.app}>
+			<div className={styles.header}>
+				<h1>Todo List</h1>
+				<p>Список дел из JSON Placeholder</p>
 			</div>
-			<div className={styles["list-container"]}>
-				<h2 className={styles["list-heading"]}>Список:</h2>
-				{list.length === 0 ? (<p className={styles["no-margin-text"]}>Нет добавленных элементов</p>
-				) : (
-					<ul className={styles.list}>
-						{list.map(item => (
-							<li key={item.id} className={styles["list-item"]}>
-								{item.value}
-							</li>
-						))}
-					</ul>
-				)}
-			</div>
-		</div>)
-}
 
+			{isLoading ? (
+				<div className={styles.loader}>Загрузка...</div>
+			) : (
+				<div className={styles.todoList}>
+					{todos.map(({ id, title, completed }) => (
+						<div key={id} className={styles.todoItem}>
+							<input
+								type="checkbox"
+								checked={completed}
+								onChange={() => handleToggleComplete(id)}
+								className={styles.checkbox}
+							/>
+							<div className={styles.todoContent}>
+								<h3 className={completed ? styles.completed : ''}>
+									{title}
+								</h3>
+
+							</div>
+						</div>
+					))}
+				</div>
+			)}
+		</div>
+	);
+};
