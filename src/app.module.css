@@ -23,6 +23,92 @@
 	font-size: 1.1em;
 }
 
+/* Стили для элементов управления */
+.controls {
+	display: flex;
+	gap: 15px;
+	justify-content: center;
+	margin-bottom: 25px;
+	flex-wrap: wrap;
+}
+
+.input {
+	padding: 15px;
+	border: none;
+	border-radius: 25px;
+	font-size: 1em;
+	background: rgba(255, 255, 255, 0.9);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	min-width: 250px;
+}
+
+.input:focus {
+	outline: none;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.addButton {
+	padding: 15px 25px;
+	background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+	color: white;
+	border: none;
+	border-radius: 25px;
+	font-size: 1em;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.addButton:hover:not(:disabled) {
+	transform: translateY(-2px);
+	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.addButton:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	transform: none;
+	box-shadow: none;
+}
+
+.sortButton {
+	padding: 15px 25px;
+	background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+	color: white;
+	border: none;
+	border-radius: 25px;
+	font-size: 1em;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.sortButton:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.sortButton.active {
+	background: linear-gradient(135deg, #00b894 0%, #00a382 100%);
+}
+
+.deleteButton {
+	padding: 10px 20px;
+	background: linear-gradient(135deg, #ff6b6b 0%, #c23616 100%);
+	color: white;
+	border: none;
+	border-radius: 20px;
+	font-size: 0.9em;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.deleteButton:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 .loader {
 	text-align: center;
 	padding: 60px 20px;
@@ -48,6 +134,7 @@
 	border-radius: 10px;
 	border-left: 4px solid #4facfe;
 	transition: all 0.3s ease;
+	gap: 15px;
 }
 
 .todoItem:hover {
@@ -58,7 +145,6 @@
 .checkbox {
 	width: 20px;
 	height: 20px;
-	margin-right: 15px;
 	accent-color: #28a745;
 	cursor: pointer;
 }
@@ -91,7 +177,6 @@
 	border-radius: 20px;
 	font-size: 0.8em;
 	font-weight: 600;
-	margin-left: 15px;
 }
 
 .statusCompleted {
@@ -104,48 +189,20 @@
 	color: #856404;
 }
 
-.addButton {
-	display: block;
-	margin: 30px auto;
-	padding: 15px 30px;
-	background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-	color: white;
-	border: none;
-	border-radius: 25px;
-	font-size: 1.1em;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s ease;
-}
-
-.addButton:hover:not(:disabled) {
-	transform: translateY(-2px);
-	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-}
-
-.addButton:disabled {
-	opacity: 0.6;
-	cursor: not-allowed;
-}
-
 /* Адаптивность */
 @media (max-width: 600px) {
 	.todoItem {
 		flex-direction: column;
 		align-items: flex-start;
-	}
-
-	.checkbox {
-		margin-bottom: 10px;
-	}
-
-	.statusCompleted,
-	.statusPending {
-		margin-left: 0;
-		margin-top: 10px;
+		gap: 12px;
 	}
 
 	.header h1 {
 		font-size: 2em;
+	}
+
+	.controls {
+		flex-direction: column;
+		align-items: center;
 	}
 }
